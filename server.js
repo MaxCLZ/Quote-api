@@ -68,12 +68,14 @@ app.delete("/api/quotes", (req, res, next) => {
     const indexOfQuote = quotes.findIndex(
       (q) => q.person === req.query.person && q.quote === req.query.quote
     );
-    console.log(req.query.quote);
-    console.log(req.query.person);
     console.log(indexOfQuote);
-    quotes.splice(indexOfQuote, 1);
-    res.status(200).send({ quotes: quotes });
+    if (indexOfQuote !== -1) {
+      quotes.splice(indexOfQuote, 1);
+      res.status(200).send({ quotes: quotes });
+    } else {
+      res.status(400).send("Quote and/or person not found");
+    }
   } else {
-    res.status(404).send("Quote and/or person not found");
+    res.status(400).send("Quote and/or person not found");
   }
 });
